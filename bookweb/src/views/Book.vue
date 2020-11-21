@@ -61,15 +61,25 @@ export default {
     }
   },
   created () {
+    // if (localStorage.getItem('accessToken') === null) {
+    //   this.$router.push('login')
+    // }
     this.loadCount()
     this.loadData(this.current, this.size)
   },
 
   methods: {
     loadData (current, size) {
-      axios.get('http://localhost:8089/book/all/' + (current - 1) * size + '/' + size).then(res => {
-        this.datasource = res.data
-        console.log(this.datasource)
+      const tokenData = { token: localStorage.getItem('accessToken') }
+      axios.post('http://localhost:8089/book/check', tokenData).then(res => {
+        if (res.data !== true) {
+          this.$router.push('login')
+        } else {
+          const postData = { curPage: (current - 1) * size, pageSize: size, token: localStorage.getItem('accessToken') }
+          axios.post('http://localhost:8089/book/all', postData).then(res => {
+            this.datasource = res.data
+          })
+        }
       })
     },
     loadCount () {

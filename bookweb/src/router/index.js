@@ -31,11 +31,25 @@ const routes = [
   {
     path: '/bookshow',
     name: 'Book',
-    component: () => import('../views/Book.vue')
+    component: () => import('../views/Book.vue'),
+    meta: {
+      loginRequest: true
+    }
+  },
+  {
+    path: '/layout',
+    name: 'Layout',
+    component: () => import('../views/Layout.vue')
+  },
+  {
+    path: 'register',
+    name: 'Register',
+    component: () => import('../views/Register.vue')
   }
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 

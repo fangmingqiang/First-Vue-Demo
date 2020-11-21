@@ -35,14 +35,10 @@ export default {
 
   methods: {
     loadData (current, size) {
-      axios.get('http://localhost:8089/book/all/' + (current - 1) * size + '/' + size).then(res => {
+      const postData = { current: (current - 1) * size, size: size, token: localStorage.getItem('accessToken') }
+      axios.post('http://localhost:8089/book/all/', postData).then(res => {
         this.datasource = res.data
-        console.log(this.datasource)
       })
-    },
-    buttonClick () {
-      this.id = this.datasource[0].id
-      this.$message.info('你上当了！')
     },
     loadCount () {
       axios.get('http://localhost:8089/book/count').then(res => {
